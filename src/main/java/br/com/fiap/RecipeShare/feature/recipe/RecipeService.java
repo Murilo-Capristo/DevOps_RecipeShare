@@ -1,5 +1,6 @@
 package br.com.fiap.RecipeShare.feature.recipe;
 
+import br.com.fiap.RecipeShare.feature.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,19 @@ public class RecipeService {
     public void deleteById(Long id){
         recipeRepository.delete(getRecipe(id));
     }
+
+    public void decrementRecipeLikes(Long id){
+        var recipe = getRecipe(id);
+        recipe.setLikes(recipe.getLikes() - 1);
+        if (recipe.getLikes() < 0) recipe.setLikes(0);
+        recipeRepository.save(recipe);
+    }
+
+    public void incrementRecipeLikes(Long id){
+        var recipe = getRecipe(id);
+        recipe.setLikes(recipe.getLikes() + 1);
+        recipeRepository.save(recipe);
+    }
+
 
 }
