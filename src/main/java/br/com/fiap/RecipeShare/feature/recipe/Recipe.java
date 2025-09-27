@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,7 +42,7 @@ public class Recipe {
     @Column(nullable = false)
     private Category category;
 
-    private int likes = 0;
+    private int likes;
 
     private String imageUrl;
 

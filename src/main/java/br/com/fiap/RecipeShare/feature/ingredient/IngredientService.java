@@ -19,7 +19,7 @@ public class IngredientService {
 
     public Ingredient findById(Long id){
         return ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"))
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
     }
 
     public Optional<Ingredient> findByName(String name){

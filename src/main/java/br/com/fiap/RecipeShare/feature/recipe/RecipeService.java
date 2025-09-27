@@ -1,7 +1,11 @@
 package br.com.fiap.RecipeShare.feature.recipe;
 
+import br.com.fiap.RecipeShare.enums.Unit;
+import br.com.fiap.RecipeShare.feature.ingredient.Ingredient;
+import br.com.fiap.RecipeShare.feature.ingredientRecipe.IngredientRecipe;
 import br.com.fiap.RecipeShare.feature.user.User;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +32,10 @@ public class RecipeService {
     }
 
     public Recipe save(Recipe recipe){
+        // seta a referência da receita em cada IngredientRecipe
+        for (IngredientRecipe ir : recipe.getIngredients()) {
+            ir.setRecipe(recipe);
+        }
         return recipeRepository.save(recipe);
     }
 
@@ -35,14 +43,18 @@ public class RecipeService {
         recipeRepository.delete(getRecipe(id));
     }
 
-    public void decrementRecipeLikes(Long id){
+    public void decrementRecipeLikes(Long id, User user){
         var recipe = getRecipe(id);
+        if (recipe.getLikes() <= 0){
+            recipe.setLikes(0);
+            return;
+        }
         recipe.setLikes(recipe.getLikes() - 1);
-        if (recipe.getLikes() < 0) recipe.setLikes(0);
         recipeRepository.save(recipe);
+
     }
 
-    public void incrementRecipeLikes(Long id){
+    public void incrementRecipeLikes(Long id, User user){
         var recipe = getRecipe(id);
         recipe.setLikes(recipe.getLikes() + 1);
         recipeRepository.save(recipe);

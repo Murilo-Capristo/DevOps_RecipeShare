@@ -1,6 +1,7 @@
 package br.com.fiap.RecipeShare.feature.recipe;
 
 
+import br.com.fiap.RecipeShare.feature.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +19,7 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final UserService userService;
+
 
 
     @GetMapping

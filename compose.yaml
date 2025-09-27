@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgres_y
+    environment:
+      - 'POSTGRES_DB=recipeshare'
+      - 'POSTGRES_PASSWORD=recipeshare'
+      - 'POSTGRES_USER=recipeshare'
+    ports:
+      - '5432:5432'
