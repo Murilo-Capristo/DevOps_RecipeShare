@@ -11,7 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -55,9 +57,19 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IngredientRecipe> ingredients;
 
-
+    @ManyToMany
+    @JoinTable(
+            name = "recipe_likes", // tabela de join
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> usersWhoLiked = new HashSet<>();
     public Long getId() {
         return id;
+    }
+
+    public boolean isLikedBy(User user) {
+        return usersWhoLiked.contains(user);
     }
 
     public void setId(Long id) {
@@ -142,5 +154,13 @@ public class Recipe {
 
     public void setIngredients(List<IngredientRecipe> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Set<User> getUsersWhoLiked() {
+        return usersWhoLiked;
+    }
+
+    public void setUsersWhoLiked(Set<User> usersWhoLiked) {
+        this.usersWhoLiked = usersWhoLiked;
     }
 }

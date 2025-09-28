@@ -66,15 +66,22 @@
                     Ver Receita
                 </a>
 <!--                 Likes-->
-                <form class="likeForm" method="post" th:action="@{'/recipe/like/' + ${recipe.id}}">
+                <form class="likeForm" method="post" th:action="@{'/recipe/toggle-like/' + ${recipe.id}}">
                     <input type="hidden" name="_method" value="put">
-                    <button type="button" class="likeBtn btn btn-outline btn-error" title="Curtir">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                    <button type="submit"
+                            class="likeBtn btn"
+                            th:classappend="${recipe.usersWhoLiked.contains(user)} ? 'bg-transparent' : 'bg-transparent'"
+                            style="border: none; padding: 0; box-shadow: none;"
+                            title="Curtir">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                             th:attr="fill=${recipe.usersWhoLiked.contains(user)} ? 'red' : 'none',
+                      stroke=${recipe.usersWhoLiked.contains(user)} ? 'red' : 'black'"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
                             <path d="M12 21C12 21 4 14.5 4 9.5C4 6.42 6.42 4 9.5 4C11.24 4 12.91 4.81 13.99 6.09C15.07 4.81 16.76 4 18.5 4C21.58 4 24 6.42 24 9.5C24 14.5 16 21 16 21H12Z"></path>
                         </svg>
                     </button>
                 </form>
+
 
                 <form th:if="${recipe.user != null && recipe.user.email == user.attributes.login}" method="post" th:action="${'/recipe/' + recipe.id}">
                     <input type="hidden" name="_method" value="delete">
@@ -84,31 +91,7 @@
         </div>
     </div>
 </main>
-<!--//script do botão de like-->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".likeForm").forEach(form => {
-            const btn = form.querySelector(".likeBtn");
-            let liked = false;
 
-            btn.addEventListener("click", function () {
-                if (!liked) {
-                    btn.classList.remove("btn-outline");
-                    btn.classList.add("btn-error", "text-white");
-                    form.action = form.action.replace("/dislike/", "/like/");
-                    form.submit();
-                } else {
-                    btn.classList.add("btn-outline");
-                    btn.classList.remove("text-white");
-                    form.action = form.action.replace("/like/", "/dislike/");
-                    form.submit();
-                }
-                liked = !liked;
-            });
-        });
-    });
-
-</script>
 
 </body>
 

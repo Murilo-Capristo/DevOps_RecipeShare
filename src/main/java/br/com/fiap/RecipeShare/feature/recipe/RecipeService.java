@@ -28,7 +28,7 @@ public class RecipeService {
     }
 
     public List<Recipe> findAllRecipes(){
-        return recipeRepository.findAll();
+        return recipeRepository.findAllByOrderByTitle();
     }
 
     public Recipe save(Recipe recipe){
@@ -43,21 +43,33 @@ public class RecipeService {
         recipeRepository.delete(getRecipe(id));
     }
 
-    public void decrementRecipeLikes(Long id, User user){
+
+    @Transactional
+
+    public boolean  decrementRecipeLikes(Long id, User user){
         var recipe = getRecipe(id);
+        boolean liked = recipe.getUsersWhoLiked().remove(user); // true se ja curtiu
         if (recipe.getLikes() <= 0){
             recipe.setLikes(0);
-            return;
+            return liked;
         }
-        recipe.setLikes(recipe.getLikes() - 1);
-        recipeRepository.save(recipe);
+        if (liked){
+            recipe.setLikes(recipe.getLikes() - 1);
+            recipeRepository.save(recipe);
+        }
+        return liked;
 
     }
 
-    public void incrementRecipeLikes(Long id, User user){
+    @Transactional
+    public boolean  incrementRecipeLikes(Long id, User user){
         var recipe = getRecipe(id);
-        recipe.setLikes(recipe.getLikes() + 1);
-        recipeRepository.save(recipe);
+        boolean added = recipe.getUsersWhoLiked().add(user); // true se novo like
+        if (added) {
+            recipe.setLikes(recipe.getLikes() + 1); // incrementa contador
+            recipeRepository.save(recipe);
+        }
+        return added;
     }
 
 

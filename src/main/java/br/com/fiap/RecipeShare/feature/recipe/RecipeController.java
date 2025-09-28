@@ -2,6 +2,7 @@ package br.com.fiap.RecipeShare.feature.recipe;
 
 
 import br.com.fiap.RecipeShare.feature.ingredient.IngredientService;
+import br.com.fiap.RecipeShare.feature.user.User;
 import br.com.fiap.RecipeShare.feature.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/recipe")
@@ -33,7 +36,12 @@ public class RecipeController {
         model.addAttribute("recipes", recipeService.findAllRecipes());
         model.addAttribute("user", user);
         model.addAttribute("avatar", avatar);
+
+        var recipes = recipeService.findAllRecipes();
+        User loggedUser = userService.register(user);
+
         return "index";
+
 
     }
 
@@ -68,17 +76,21 @@ public class RecipeController {
         return "redirect:/recipe";
     }
 
-    @PutMapping("/like/{id}")
-    public String like(@PathVariable Long id, @AuthenticationPrincipal OAuth2User principal){
-        recipeService.incrementRecipeLikes(id, userService.register(principal));
+    @PutMapping("/toggle-like/{id}")
+    public String toggleLike(@PathVariable Long id, @AuthenticationPrincipal OAuth2User principal) {
+        User user = userService.register(principal);
+        Recipe recipe = recipeService.getRecipe(id);
+
+        if (recipe.getUsersWhoLiked().contains(user)) {
+            recipeService.decrementRecipeLikes(id, user);
+        } else {
+            recipeService.incrementRecipeLikes(id, user);
+        }
+
         return "redirect:/recipe";
     }
 
-    @PutMapping("/dislike/{id}")
-    public String dislike(@PathVariable Long id, @AuthenticationPrincipal OAuth2User principal){
-        recipeService.decrementRecipeLikes(id, userService.register(principal));
-        return "redirect:/recipe";
-    }
+
 
 
 }
