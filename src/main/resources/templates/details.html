@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="foodie" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${recipe.title}">Recipe Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-orange-50">
+
+<nav class="navbar bg-orange-100 shadow-sm p-4">
+    <div class="flex-1">
+        <a href="/" class="btn btn-ghost text-xl font-bold">RecipeShare</a>
+    </div>
+</nav>
+
+<main class="max-w-4xl mx-auto p-6">
+    <div class="card bg-orange-200 shadow-lg p-6">
+        <!-- Título e Autor -->
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-3xl font-bold text-red-600" th:text="${recipe.title}"></h1>
+            <div class="flex items-center gap-2">
+                <div class="avatar">
+                    <div class="w-12 rounded-full">
+                        <img th:src="${recipe.user.avatarUrl}" alt="Autor"/>
+                    </div>
+                </div>
+                <span th:text="${recipe.user.name}"></span>
+            </div>
+        </div>
+
+        <!-- Likes -->
+        <div class="badge badge-warning mb-4" th:text="${recipe.likes + ' likes'}"></div>
+
+        <!-- Detalhes -->
+        <div class="mb-4">
+            <p><strong>Categoria:</strong> <span th:text="${recipe.category}"></span></p>
+            <p><strong>Dificuldade:</strong> <span th:text="${recipe.difficulty}"></span></p>
+            <p><strong>Porções:</strong> <span th:text="${recipe.portions}"></span></p>
+            <p><strong>Tempo de Preparo:</strong> <span th:text="${recipe.prepTime} + ' min'"></span></p>
+        </div>
+
+        <!-- Imagem -->
+        <div th:if="${recipe.imageUrl}" class="mb-4">
+            <img th:src="${recipe.imageUrl}" alt="Imagem da receita" class="rounded-lg w-full"/>
+        </div>
+
+        <!-- Descrição -->
+        <div class="mb-4">
+            <h2 class="text-xl font-semibold">Descrição</h2>
+            <p th:text="${recipe.description}"></p>
+        </div>
+
+        <!-- Ingredientes -->
+        <div class="mb-4">
+            <h2 class="text-xl font-semibold">Ingredientes</h2>
+            <ul class="list-disc list-inside" th:each="ing : ${recipe.ingredients}">
+                <li th:text="${ing.quantity + ' ' + ing.unit + ' ' + ing.name}"></li>
+            </ul>
+        </div>
+
+        <!-- Voltar -->
+        <div class="card-actions justify-end">
+            <a href="/" class="btn btn-secondary bg-yellow-400 hover:bg-yellow-500">Voltar</a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

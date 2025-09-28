@@ -34,6 +34,13 @@ public class RecipeController {
 
     }
 
+    @GetMapping("{id}")
+    public String details(@PathVariable Long id, Model model){
+        Recipe recipe = recipeService.getRecipe(id);
+        model.addAttribute("recipe", recipe);
+        return "recipe/details";
+    }
+
     @GetMapping("/form")
     public String form(Recipe recipe){
         return "form";

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="foodie" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>RecipeShare</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-orange-50">
+
+<nav class="navbar bg-orange-100 shadow-sm p-4">
+    <div class="flex-1">
+        <a class="btn btn-ghost text-xl font-bold">RecipeShare</a>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            <li>
+<!--                <a href="/ranking">Ranking </a>-->
+                <details>
+                    <summary>🌎</summary>
+                    <ul class="bg-base-100 rounded-t-none p-2">
+                        <li><a href="?lang=pt_BR">🇧🇷</a></li>
+                        <li><a href="?lang=en_US">en</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full">
+                    <img alt="Avatar do usuário" th:src="${avatar}" />
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                <li>
+                    <a class="justify-between"
+                       th:text="${user.attributes['email'] != null ? user.attributes['email'] : user.attributes['login']}">
+                    </a>
+                </li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div th:each="recipe : ${recipes}" class="card bg-orange-200 shadow-lg">
+        <div class="flex items-center m-4 gap-2">
+            <div class="avatar">
+                <div class="w-12 rounded-full">
+                    <img th:src="${recipe.user.avatarUrl}" alt="Autor"/>
+                </div>
+            </div>
+            <span th:text="${recipe.user.name}" class="font-semibold"></span>
+        </div>
+
+        <div class="card-body">
+            <h2 class="card-title text-red-600" th:text="${recipe.title}"></h2>
+            <span class="badge badge-warning mb-2" th:text="${recipe.likes + ' likes'}"></span>
+
+            <div class="card-actions justify-end">
+                <a th:href="@{'/recipe/' + ${recipe.id}}" class="btn btn-primary bg-red-500 hover:bg-red-600">
+                    Ver Receita
+                </a>
+                // Likes
+                <form class="likeForm" method="post" th:action="@{'/recipe/like/' + ${recipe.id}}">
+                    <input type="hidden" name="_method" value="put">
+                    <button type="button" class="likeBtn btn btn-outline btn-error" title="Curtir">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
+                            <path d="M12 21C12 21 4 14.5 4 9.5C4 6.42 6.42 4 9.5 4C11.24 4 12.91 4.81 13.99 6.09C15.07 4.81 16.76 4 18.5 4C21.58 4 24 6.42 24 9.5C24 14.5 16 21 16 21H12Z"></path>
+                        </svg>
+                    </button>
+                </form>
+
+                <form th:if="${recipe.user != null && recipe.user.email == user.attributes.login}" method="post" th:action="${'/recipe/' + recipe.id}">
+                    <input type="hidden" name="_method" value="delete">
+                    <button class="btn btn-primary btn-soft" th:text="#{delete}"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<!--//script do botão de like-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.getElementById("likeBtn");
+        const form = document.getElementById("likeForm");
+        let liked = false; // estado inicial: só borda, não curtido
+
+        btn.addEventListener("click", function () {
+            if (!liked) {
+                // dar like
+                btn.classList.remove("btn-outline");
+                btn.classList.add("btn-error", "text-white"); // coração vermelho
+                form.action = form.action.replace("/dislike/", "/like/"); // garante que é /like
+                form.submit();
+            } else {
+                // tirar like
+                btn.classList.add("btn-outline");
+                btn.classList.remove("text-white"); // apenas borda
+                form.action = form.action.replace("/like/", "/dislike/"); // garante que é /dislike
+                form.submit();
+            }
+            liked = !liked;
+        });
+    });
+</script>
+
+</body>
+
+</html>
