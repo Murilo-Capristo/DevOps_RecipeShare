@@ -1,5 +1,6 @@
 -- ==========================================
 -- Criação das tabelas
+--!!! TIVE QUE NOMEAR V12 e V13 MEUS MIGRATIONS POIS USEI O MESMO BANCO DO EPICTASK, POIS O RENDER NAO DEIXAVA EU TER MAIS DE 1 BANCO
 -- ==========================================
 
 -- Tabela de usuários
