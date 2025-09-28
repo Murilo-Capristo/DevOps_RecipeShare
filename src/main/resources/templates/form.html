@@ -88,14 +88,15 @@
         <!-- Ingredientes -->
         <fieldset class="fieldset mb-4">
             <legend class="fieldset-legend">Ingredientes</legend>
-            <div th:each="ingredientRecipe, iterStat : ${recipe.ingredients}" class="flex gap-2 mb-2 items-center">
-                <select th:field="*{ingredients[__${iterStat.index}__].ingredient}" class="select select-bordered flex-1">
+
+            <div class="flex gap-2 mb-2 items-center">
+                <select name="ingredientId" class="select select-bordered flex-1">
                     <option th:each="ing : ${ingredients}" th:value="${ing.id}" th:text="${ing.name}"></option>
                 </select>
 
-                <input th:field="*{ingredients[__${iterStat.index}__].quantity}" type="number" min="0" class="input w-24" placeholder="Quantidade">
+                <input name="quantity" type="number" min="0" class="input w-24" placeholder="Quantidade">
 
-                <select th:field="*{ingredients[__${iterStat.index}__].unit}" class="select select-bordered w-32">
+                <select name="unit" class="select select-bordered w-32">
                     <option value="GRAMAS">Gramas</option>
                     <option value="ML">ML</option>
                     <option value="UNIDADES">Unidades</option>
@@ -105,6 +106,8 @@
                     <option value="XICARA">Xícara</option>
                 </select>
             </div>
+
+            <button type="button" class="btn btn-outline mt-2" id="addIngredientBtn">Adicionar Ingrediente</button>
         </fieldset>
 
         <!-- Botões -->
@@ -122,6 +125,15 @@
         const hours = parseInt(document.querySelector("#hours").value) || 0;
         const minutes = parseInt(document.querySelector("#minutes").value) || 0;
         document.querySelector("#prepTimeHidden").value = hours * 60 + minutes;
+    });
+
+    // botão para puxar os ingredientes
+    const addBtn = document.getElementById('addIngredientBtn');
+    const ingredientsDiv = document.querySelector('fieldset > div');
+    addBtn.addEventListener('click', () => {
+        const newIngredient = ingredientsDiv.cloneNode(true);
+        newIngredient.querySelectorAll('input, select').forEach(el => el.value = '');
+        ingredientsDiv.parentNode.insertBefore(newIngredient, addBtn);
     });
 </script>
 

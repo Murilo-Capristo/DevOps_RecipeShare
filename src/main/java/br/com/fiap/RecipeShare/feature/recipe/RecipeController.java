@@ -1,6 +1,7 @@
 package br.com.fiap.RecipeShare.feature.recipe;
 
 
+import br.com.fiap.RecipeShare.feature.ingredient.IngredientService;
 import br.com.fiap.RecipeShare.feature.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final UserService userService;
+    private final IngredientService ingredientService;
+
 
 
 
@@ -42,7 +45,9 @@ public class RecipeController {
     }
 
     @GetMapping("/form")
-    public String form(Recipe recipe){
+    public String form(Model model, Recipe recipe){
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("ingredients", ingredientService.findAll());
         return "form";
     }
 
