@@ -70,12 +70,12 @@
                     <input type="hidden" name="_method" value="put">
                     <button type="submit"
                             class="likeBtn btn"
-                            th:classappend="${recipe.usersWhoLiked.contains(user)} ? 'bg-transparent' : 'bg-transparent'"
+                            th:classappend="${recipe.usersWhoLiked.contains(loggedUser)} ? 'bg-transparent' : 'bg-transparent'"
                             style="border: none; padding: 0; box-shadow: none;"
                             title="Curtir">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                             th:attr="fill=${recipe.usersWhoLiked.contains(user)} ? 'red' : 'none',
-                      stroke=${recipe.usersWhoLiked.contains(user)} ? 'red' : 'black'"
+                             th:attr="fill=${recipe.usersWhoLiked.contains(loggedUser)} ? 'red' : 'none',
+                  stroke=${recipe.usersWhoLiked.contains(loggedUser)} ? 'red' : 'black'"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
                             <path d="M12 21C12 21 4 14.5 4 9.5C4 6.42 6.42 4 9.5 4C11.24 4 12.91 4.81 13.99 6.09C15.07 4.81 16.76 4 18.5 4C21.58 4 24 6.42 24 9.5C24 14.5 16 21 16 21H12Z"></path>
                         </svg>

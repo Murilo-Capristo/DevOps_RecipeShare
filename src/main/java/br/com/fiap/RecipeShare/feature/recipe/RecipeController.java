@@ -30,15 +30,15 @@ public class RecipeController {
 
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal OAuth2User user){
+        User loggedUser = userService.register(user);
         var avatar = user.getAttributes().get("picture") != null?
                 user.getAttributes().get("picture") :
                 user.getAttributes().get("avatar_url");
         model.addAttribute("recipes", recipeService.findAllRecipes());
         model.addAttribute("user", user);
         model.addAttribute("avatar", avatar);
+        model.addAttribute("loggedUser", loggedUser);
 
-        var recipes = recipeService.findAllRecipes();
-        User loggedUser = userService.register(user);
 
         return "index";
 
