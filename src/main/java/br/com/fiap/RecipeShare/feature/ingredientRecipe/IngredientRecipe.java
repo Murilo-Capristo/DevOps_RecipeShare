@@ -5,10 +5,8 @@ import br.com.fiap.RecipeShare.feature.ingredient.Ingredient;
 
 import br.com.fiap.RecipeShare.feature.recipe.Recipe;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.DecimalMin;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -25,14 +23,17 @@ public class IngredientRecipe {
     // Relacionamento com Recipe
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
+    @ToString.Exclude  // bug de loop tostring
     private Recipe recipe;
 
     // Relacionamento com Ingredient
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
+    @ToString.Exclude  // bug de loop tostring
     private Ingredient ingredient;
 
     @Column(nullable = false)
+    @DecimalMin(value = "0.01", message = "Quantidade deve ser maior que 0")
     private double quantity;
 
     @Enumerated(EnumType.STRING)

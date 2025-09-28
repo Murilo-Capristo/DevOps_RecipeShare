@@ -32,12 +32,20 @@ public class RecipeService {
     }
 
     public Recipe save(Recipe recipe){
-        // seta a referência da receita em cada IngredientRecipe
+        // Remove ingredientes com campos vazios
+        recipe.getIngredients().removeIf(ir ->
+                ir.getIngredient() == null ||
+                        ir.getQuantity() == 0 ||
+                        ir.getUnit() == null
+        );
+
+        // Seta a referência da receita em cada IngredientRecipe restante
         for (IngredientRecipe ir : recipe.getIngredients()) {
             ir.setRecipe(recipe);
         }
         return recipeRepository.save(recipe);
     }
+
 
     public void deleteById(Long id){
         recipeRepository.delete(getRecipe(id));

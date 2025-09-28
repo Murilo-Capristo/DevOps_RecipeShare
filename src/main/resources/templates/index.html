@@ -2,7 +2,7 @@
 <html lang="en" data-theme="foodie" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>RecipeShare</title>
+    <title th:text="#{title.recipeList}">Receitas</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -16,7 +16,6 @@
     <div class="flex-none">
         <ul class="menu menu-horizontal px-1">
             <li>
-<!--                <a href="/ranking">Ranking </a>-->
                 <details>
                     <summary>🌎</summary>
                     <ul class="bg-base-100 rounded-t-none p-2">
@@ -38,13 +37,13 @@
                        th:text="${user.attributes['email'] != null ? user.attributes['email'] : user.attributes['login']}">
                     </a>
                 </li>
-                <li><a href="/logout">Logout</a></li>
+                <li><a href="/logout" th:text="#{button.logout}">Logout</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<a href="/recipe/form" class="btn btn-primary m-4" > Nova Receita</a>
+<a href="/recipe/form" class="btn btn-primary m-4" th:text="#{button.newRecipe}">Nova Receita</a>
 
 <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
     <div th:each="recipe : ${recipes}" class="card bg-orange-200 shadow-lg">
@@ -59,13 +58,11 @@
 
         <div class="card-body">
             <h2 class="card-title text-red-600" th:text="${recipe.title}"></h2>
-            <span class="badge badge-warning mb-2" th:text="${recipe.likes + ' likes'}"></span>
+            <span class="badge badge-warning mb-2" th:text="${recipe.likes + ' ' + 'likes'}"></span>
 
             <div class="card-actions justify-end">
-                <a th:href="@{/recipe/{id}(id=${recipe.id})}" class="btn btn-primary bg-red-500 hover:bg-red-600">
-                    Ver Receita
-                </a>
-<!--                 Likes-->
+                <a th:href="@{/recipe/{id}(id=${recipe.id})}" class="btn btn-primary bg-red-500 hover:bg-red-600" th:text="#{button.viewRecipe}">Ver Receita</a>
+
                 <form class="likeForm" method="post" th:action="@{'/recipe/toggle-like/' + ${recipe.id}}">
                     <input type="hidden" name="_method" value="put">
                     <button type="submit"
@@ -82,10 +79,9 @@
                     </button>
                 </form>
 
-
                 <form th:if="${recipe.user != null && recipe.user.email == user.attributes.login}" method="post" th:action="${'/recipe/' + recipe.id}">
                     <input type="hidden" name="_method" value="delete">
-                    <button class="btn btn-primary btn-soft" th:text="#{delete}"></button>
+                    <button class="btn btn-primary btn-soft" th:text="#{button.delete}"></button>
                 </form>
             </div>
         </div>

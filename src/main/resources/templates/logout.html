@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" data-theme="dracula">
+<html lang="en" data-theme="foodie" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/assets/logo_icon.png" />
@@ -9,19 +9,17 @@
   <title>Logout</title>
 </head>
 <body class="flex items-center justify-center h-screen bg-base-200">
-
 <div class="card bg-neutral text-neutral-content w-96 mx-auto shadow-md">
   <div class="card-body items-center text-center">
     <h2 class="card-title">Logout!</h2>
-    <p>Tem certeza que deseja sair?</p>
+    <p th:text="#{msg.logoutConfirm}"></p>
     <div class="card-actions justify-end mt-4">
       <form method="post" th:action="@{/logout}">
         <button class="btn btn-primary">Logout</button>
       </form>
-      <a href="javascript:history.back()" class="btn btn-ghost">Cancelar</a>
+      <a href="javascript:history.back()" class="btn btn-ghost" th:text="#{button.cancel}">Cancelar</a>
     </div>
   </div>
 </div>
-
 </body>
 </html>

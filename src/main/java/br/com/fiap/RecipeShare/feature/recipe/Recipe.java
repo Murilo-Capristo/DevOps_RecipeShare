@@ -5,10 +5,8 @@ import br.com.fiap.RecipeShare.enums.Difficulty;
 import br.com.fiap.RecipeShare.feature.ingredientRecipe.IngredientRecipe;
 import br.com.fiap.RecipeShare.feature.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,26 +24,39 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "{recipe.title}")
+    @Size(min = 3, max = 100, message = "{recipe.titleSize}")
     @Column(nullable = false)
     private String title;
 
+    @NotBlank(message = "{recipe.description}")
+    @Size(min = 10, message = "{recipe.descriptionSize}")
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Min(value = 1, message = "{recipe.portions")
     private int portions;
 
+    @Min(value = 1, message = "{recipe.prepTime}")
     private int prepTime; // em minutos
 
+    @NotNull(message = "{recipe.dificulty}")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Difficulty difficulty;
 
+    @NotNull(message = "{recipe.category}")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category;
 
     private int likes;
 
+    @NotBlank(message = "{recipe.imageUrl}")
+    @Pattern(
+            regexp = "^(http|https)://.*$",
+            message = "{recipe.imageUrlValid}"
+    )
     private String imageUrl;
 
     // Relacionamento com usuário (autor da receita)
@@ -55,7 +66,8 @@ public class Recipe {
 
     // Relacionamento com IngredientRecipe
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<IngredientRecipe> ingredients;
+    @ToString.Exclude // evitar loop toString
+    private List<IngredientRecipe> ingredients = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -64,12 +76,13 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> usersWhoLiked = new HashSet<>();
-    public Long getId() {
-        return id;
-    }
 
     public boolean isLikedBy(User user) {
         return usersWhoLiked.contains(user);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {

@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -60,10 +61,20 @@ public class RecipeController {
     }
 
     @PostMapping("/form")
-    public String create(@Valid Recipe recipe, BindingResult result, RedirectAttributes redirect){
+    public String create(@Valid Recipe recipe, BindingResult result, RedirectAttributes redirect, Model model, @AuthenticationPrincipal OAuth2User oAuth2User) {
+        // Remove ingredientes totalmente vazios (sem id, quantidade ou unidade)
+        recipe.getIngredients().removeIf(ir ->
+                ir.getIngredient() == null ||
+                        ir.getQuantity() <= 0 ||
+                        ir.getUnit() == null
+        );
+
         if(result.hasErrors()){
+            model.addAttribute("ingredients", ingredientService.findAll());
             return "form";
         }
+        User user = userService.register(oAuth2User);
+        recipe.setUser(user);
         recipeService.save(recipe);
         redirect.addFlashAttribute("message", "Recipe created successfully");
         return "redirect:/recipe";
