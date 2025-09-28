@@ -55,14 +55,17 @@
         <!-- Ingredientes -->
         <div class="mb-4">
             <h2 class="text-xl font-semibold">Ingredientes</h2>
-            <ul class="list-disc list-inside" th:each="ing : ${recipe.ingredients}">
-                <li th:text="${ing.quantity + ' ' + ing.unit + ' ' + ing.name}"></li>
+            <ul class="list-disc list-inside" th:if="${recipe.ingredients}">
+                <li th:each="ing : ${recipe.ingredients}"
+                    th:text="${(ing.quantity != null ? ing.quantity : '') + ' ' + (ing.unit != null ? ing.unit : '') + ' ' + (ing.ingredient.name != null ? ing.ingredient.name : '')}">
+                </li>
             </ul>
+            <p th:if="${recipe.ingredients == null || #lists.isEmpty(recipe.ingredients)}">Sem ingredientes cadastrados.</p>
         </div>
 
         <!-- Voltar -->
         <div class="card-actions justify-end">
-            <a href="/" class="btn btn-secondary bg-yellow-400 hover:bg-yellow-500">Voltar</a>
+            <a href="/recipe" class="btn btn-secondary bg-yellow-400 hover:bg-yellow-500">Voltar</a>
         </div>
     </div>
 </main>
