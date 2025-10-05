@@ -6,37 +6,28 @@ name: 'Build and deploy JAR app to Azure Web App: recipeshare-rm556794'
 on:
   push:
     branches:
-      - main
+    - main
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    
+    - name: Set up Java version
+      uses: actions/setup-java@v1
+      with:
+        java-version: '17'
+    
+    - name: Build with Maven
+      run: mvn clean install
 
-      - name: Set up Java version
-        uses: actions/setup-java@v1
-        with:
-          java-version: '17'
-
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./gradlew
-
-      - name: Build with Gradle
-        env:
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          RSGITHUB_CLIENT_ID: ${{ secrets.RSGITHUB_CLIENT_ID }}
-          RSGITHUB_CLIENT_SECRET: ${{ secrets.RSGITHUB_CLIENT_SECRET }}
-        run: ./gradlew clean build --stacktrace
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'recipeshare-rm556794'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_9b1782ca50874fb7906cce20af2bea5e }}
-          package: 'build/libs/*-SNAPSHOT.jar' # evita erro de múltiplos JARs
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: 'recipeshare-rm556794'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9b1782ca50874fb7906cce20af2bea5e }}
+        package: '${{ github.workspace }}/target/*.jar'
