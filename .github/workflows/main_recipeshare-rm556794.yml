@@ -1,5 +1,5 @@
-# Docs for the Azure Web Apps Deploy action: [https://github.com/Azure/webapps-deploy](https://github.com/Azure/webapps-deploy)
-# More GitHub Actions for Azure: [https://github.com/Azure/actions](https://github.com/Azure/actions)
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: 'Build and deploy JAR app to Azure Web App: recipeshare-rm556794'
 
@@ -12,28 +12,31 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Set up Java version
-      uses: actions/setup-java@v1
-      with:
-        java-version: '17'
-        
-    - name: Grant execute permission to gradlew
-      run: chmod +x ./gradlew
-      
-    - name: Build with Gradle
-      env:
-        SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-        SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-        SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-      run: ./gradlew build --stacktrace
-      
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with: 
-        app-name: 'recipeshare-rm556794'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9b1782ca50874fb7906cce20af2bea5e }} # LEMBRE-SE DE VERIFICAR O NOME DO SECRET!
-        package: 'build/libs/*.jar'
+      - uses: actions/checkout@v2
+
+      - name: Set up Java version
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          RSGITHUB_CLIENT_ID: ${{ secrets.RSGITHUB_CLIENT_ID }}
+          RSGITHUB_CLIENT_SECRET: ${{ secrets.RSGITHUB_CLIENT_SECRET }}
+        run: ./gradlew clean build --stacktrace
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'recipeshare-rm556794'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_9b1782ca50874fb7906cce20af2bea5e }}
+          package: 'build/libs/*-SNAPSHOT.jar' # evita erro de múltiplos JARs
