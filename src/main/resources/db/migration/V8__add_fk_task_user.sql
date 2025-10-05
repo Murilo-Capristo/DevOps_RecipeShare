@@ -1,8 +1,0 @@
-ALTER TABLE task
-ADD user_id BIGINT;
-
-ALTER TABLE task
-ADD CONSTRAINT fk_task_user
-FOREIGN KEY (user_id)
-REFERENCES epicUser(id)
-ON DELETE SET NULL;
