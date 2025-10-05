@@ -31,12 +31,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Flyway (SQL Server)
 	implementation 'org.flywaydb:flyway-core'
-	implementation 'org.flywaydb:flyway-database-postgresql'
+	implementation 'org.flywaydb:flyway-sqlserver'
+	//implementation 'org.flywaydb:flyway-database-postgresql' // removido
+	//implementation 'org.flywaydb:flyway-database-mysql'
+	//implementation 'org.flywaydb:flyway-database-oracle'
+
+	// SQL Server JDBC driver
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
