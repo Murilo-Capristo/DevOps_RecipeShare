@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="foodie" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt" data-theme="foodie">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${recipe.title}">Recipe Details</title>
+    <title>Detalhes da Receita</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -31,14 +31,14 @@
         </div>
 
         <!-- Likes -->
-        <div class="badge badge-warning mb-4" th:text="${recipe.likes + ' ' + 'likes'}"></div>
+        <div class="badge badge-warning mb-4" th:text="${recipe.likes + ' likes'}"></div>
 
         <!-- Detalhes -->
         <div class="mb-4">
-            <p><strong th:text="#{label.category}">Categoria:</strong> <span th:text="${recipe.category}"></span></p>
-            <p><strong th:text="#{label.difficulty}">Dificuldade:</strong> <span th:text="${recipe.difficulty}"></span></p>
-            <p><strong th:text="#{label.portions}">Porções:</strong> <span th:text="${recipe.portions}"></span></p>
-            <p><strong th:text="#{label.prepTime}">Tempo de Preparo:</strong> <span th:text="${recipe.prepTime} + ' min'"></span></p>
+            <p><strong>Categoria:</strong> <span th:text="${recipe.category}"></span></p>
+            <p><strong>Dificuldade:</strong> <span th:text="${recipe.difficulty}"></span></p>
+            <p><strong>Porções:</strong> <span th:text="${recipe.portions}"></span></p>
+            <p><strong>Tempo de Preparo:</strong> <span th:text="${recipe.prepTime} + ' min'"></span></p>
         </div>
 
         <!-- Imagem -->
@@ -48,24 +48,24 @@
 
         <!-- Descrição -->
         <div class="mb-4">
-            <h2 class="text-xl font-semibold" th:text="#{label.description}">Descrição</h2>
+            <h2 class="text-xl font-semibold">Descrição</h2>
             <p th:text="${recipe.description}"></p>
         </div>
 
         <!-- Ingredientes -->
         <div class="mb-4">
-            <h2 class="text-xl font-semibold" th:text="#{label.ingredients}">Ingredientes</h2>
+            <h2 class="text-xl font-semibold">Ingredientes</h2>
             <ul class="list-disc list-inside" th:if="${recipe.ingredients}">
                 <li th:each="ing : ${recipe.ingredients}"
                     th:text="${(ing.quantity != null ? ing.quantity : '') + ' ' + (ing.unit != null ? ing.unit : '') + ' ' + (ing.ingredient.name != null ? ing.ingredient.name : '')}">
                 </li>
             </ul>
-            <p th:if="${recipe.ingredients == null || #lists.isEmpty(recipe.ingredients)}" th:text="#{msg.noIngredients}">Sem ingredientes cadastrados.</p>
+            <p th:if="${recipe.ingredients == null || #lists.isEmpty(recipe.ingredients)}">Sem ingredientes cadastrados.</p>
         </div>
 
         <!-- Voltar -->
         <div class="card-actions justify-end">
-            <a href="/recipe" class="btn btn-secondary bg-yellow-400 hover:bg-yellow-500" th:text="#{button.back}">Voltar</a>
+            <a href="/recipe" class="btn btn-secondary bg-yellow-400 hover:bg-yellow-500">Voltar</a>
         </div>
     </div>
 </main>

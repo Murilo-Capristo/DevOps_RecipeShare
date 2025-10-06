@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" data-theme="foodie">
+<html lang="pt" data-theme="foodie">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{button.newRecipe}">Cadastrar Receita</title>
+    <title>Cadastrar Receita</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -21,32 +21,32 @@
 
         <!-- Título da Receita -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.title}">Título da Receita</legend>
-            <input th:field="*{title}" type="text" class="input w-full" th:placeholder="#{label.title}" />
+            <legend class="fieldset-legend">Título da Receita</legend>
+            <input th:field="*{title}" type="text" class="input w-full" placeholder="Título da Receita" />
             <p class="label text-error" th:errors="*{title}"></p>
         </fieldset>
 
         <!-- Descrição da Receita -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.description}">Descrição</legend>
-            <textarea th:field="*{description}" class="textarea w-full" th:placeholder="#{label.description}"></textarea>
+            <legend class="fieldset-legend">Descrição</legend>
+            <textarea th:field="*{description}" class="textarea w-full" placeholder="Descrição"></textarea>
             <p class="label text-error" th:errors="*{description}"></p>
         </fieldset>
 
         <!-- Porções -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.portions}">Porções</legend>
+            <legend class="fieldset-legend">Porções</legend>
             <input th:field="*{portions}" type="number" min="1" class="input w-32" />
             <p class="label text-error" th:errors="*{portions}"></p>
         </fieldset>
 
         <!-- Tempo de Preparo -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.prepTime}">Tempo de Preparo</legend>
+            <legend class="fieldset-legend">Tempo de Preparo</legend>
             <div class="flex gap-2 items-center">
-                <input type="number" id="hours" min="0" value="0" class="input w-20" th:placeholder="#{label.hours}">
+                <input type="number" id="hours" min="0" value="0" class="input w-20" placeholder="Horas">
                 <span>h</span>
-                <input type="number" id="minutes" min="0" max="59" value="0" class="input w-20" th:placeholder="#{label.minutes}">
+                <input type="number" id="minutes" min="0" max="59" value="0" class="input w-20" placeholder="Minutos">
                 <span>min</span>
             </div>
             <input type="hidden" th:field="*{prepTime}" id="prepTimeHidden" />
@@ -55,39 +55,39 @@
 
         <!-- Dificuldade -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.difficulty}">Dificuldade</legend>
+            <legend class="fieldset-legend">Dificuldade</legend>
             <select th:field="*{difficulty}" class="select select-bordered w-full">
-                <option th:value="EASY" th:text="#{difficulty.easy}">Fácil</option>
-                <option th:value="MEDIUM" th:text="#{difficulty.medium}">Média</option>
-                <option th:value="HARD" th:text="#{difficulty.hard}">Difícil</option>
+                <option value="EASY">Fácil</option>
+                <option value="MEDIUM">Média</option>
+                <option value="HARD">Difícil</option>
             </select>
             <p class="label text-error" th:errors="*{difficulty}"></p>
         </fieldset>
 
         <!-- Categoria -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.category}">Categoria</legend>
+            <legend class="fieldset-legend">Categoria</legend>
             <select th:field="*{category}" class="select select-bordered w-full">
-                <option th:value="DESSERT" th:text="#{category.dessert}">Sobremesa</option>
-                <option th:value="MAIN_DISH" th:text="#{category.mainDish}">Prato Principal</option>
-                <option th:value="APPETIZER" th:text="#{category.appetizer}">Entrada</option>
-                <option th:value="DRINK" th:text="#{category.drink}">Bebida</option>
-                <option th:value="SALAD" th:text="#{category.salad}">Salada</option>
-                <option th:value="SOUP" th:text="#{category.soup}">Sopa</option>
+                <option value="DESSERT">Sobremesa</option>
+                <option value="MAIN_DISH">Prato Principal</option>
+                <option value="APPETIZER">Entrada</option>
+                <option value="DRINK">Bebida</option>
+                <option value="SALAD">Salada</option>
+                <option value="SOUP">Sopa</option>
             </select>
             <p class="label text-error" th:errors="*{category}"></p>
         </fieldset>
 
         <!-- URL da Imagem -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.imageUrl}">URL da Imagem</legend>
-            <input th:field="*{imageUrl}" type="text" class="input w-full" th:placeholder="#{label.imageUrl}" />
+            <legend class="fieldset-legend">URL da Imagem</legend>
+            <input th:field="*{imageUrl}" type="text" class="input w-full" placeholder="URL da Imagem" />
             <p class="label text-error" th:errors="*{imageUrl}"></p>
         </fieldset>
 
         <!-- Ingredientes -->
         <fieldset class="fieldset mb-4">
-            <legend class="fieldset-legend" th:text="#{label.ingredients}">Ingredientes</legend>
+            <legend class="fieldset-legend">Ingredientes</legend>
 
             <div id="ingredientsContainer">
                 <div class="ingredient-row flex gap-2 mb-2 items-center">
@@ -95,39 +95,36 @@
                         <option th:each="ing : ${ingredients}" th:value="${ing.id}" th:text="${ing.name}"></option>
                     </select>
 
-                    <input th:field="*{ingredients[0].quantity}" type="number" min="0" class="input w-24" th:placeholder="#{label.quantity}">
+                    <input th:field="*{ingredients[0].quantity}" type="number" min="0" class="input w-24" placeholder="Quantidade">
                     <select th:field="*{ingredients[0].unit}" class="select select-bordered w-32">
-                        <option th:value="GRAMAS" th:text="#{unit.grams}">Gramas</option>
-                        <option th:value="ML" th:text="#{unit.ml}">ML</option>
-                        <option th:value="UNIDADES" th:text="#{unit.units}">Unidades</option>
-                        <option th:value="COLHER" th:text="#{unit.spoon}">Colher</option>
-                        <option th:value="COLHER_DE_SOPA" th:text="#{unit.tablespoon}">Colher de sopa</option>
-                        <option th:value="COLHER_DE_CHA" th:text="#{unit.teaspoon}">Colher de chá</option>
-                        <option th:value="XICARA" th:text="#{unit.cup}">Xícara</option>
+                        <option value="GRAMAS">Gramas</option>
+                        <option value="ML">ML</option>
+                        <option value="UNIDADES">Unidades</option>
+                        <option value="COLHER">Colher</option>
+                        <option value="COLHER_DE_SOPA">Colher de sopa</option>
+                        <option value="COLHER_DE_CHA">Colher de chá</option>
+                        <option value="XICARA">Xícara</option>
                     </select>
                 </div>
             </div>
 
-            <button type="button" class="btn btn-outline mt-2" id="addIngredientBtn" th:text="#{button.addIngredient}">Adicionar Novo Ingrediente</button>
+            <button type="button" class="btn btn-outline mt-2" id="addIngredientBtn">Adicionar Novo Ingrediente</button>
         </fieldset>
 
         <!-- Botões -->
         <div class="flex gap-4 mt-4">
-            <a href="/recipe" class="btn btn-neutral" th:text="#{button.cancel}">Cancelar</a>
-            <button type="submit" class="btn btn-primary" th:text="#{button.save}">Salvar</button>
+            <a href="/recipe" class="btn btn-neutral">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
     </form>
 </main>
 <script>
-    // Converte horas e minutos para minutos totais antes de enviar
     const form = document.querySelector("form");
     form.addEventListener("submit", function (e) {
         const hours = parseInt(document.querySelector("#hours").value) || 0;
         const minutes = parseInt(document.querySelector("#minutes").value) || 0;
         document.querySelector("#prepTimeHidden").value = hours * 60 + minutes;
     });
-
-    // botão para puxar os ingredientes
 
     const addBtn = document.getElementById('addIngredientBtn');
     const container = document.getElementById('ingredientsContainer');
@@ -138,11 +135,9 @@
         const quantityInput = lastRow.querySelector('input');
         const unitSelect = lastRow.querySelector('select:last-child');
 
-        // Remove mensagem de erro anterior
         const existingError = container.querySelector('.error-msg');
         if (existingError) existingError.remove();
 
-        // Validação de campos
         if (!ingredientSelect.value) {
             showError('Selecione um ingrediente.');
             return;
@@ -158,15 +153,10 @@
             return;
         }
 
-        // Adiciona nova linha se todos os campos estiverem preenchidos
         const index = container.querySelectorAll('.ingredient-row').length;
         const template = container.querySelector('.ingredient-row');
         const clone = template.cloneNode(true);
-
-        // limpar valores
         clone.querySelectorAll('input, select').forEach(el => el.value = '');
-
-        // atualizar índices nos names
         clone.querySelectorAll('[name]').forEach(el => {
             el.name = el.name.replace(/\d+/, index);
         });
@@ -181,7 +171,6 @@
         container.appendChild(errorMsg);
     }
 </script>
-
 
 </body>
 </html>

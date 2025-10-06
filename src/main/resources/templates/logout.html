@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="foodie" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt" data-theme="foodie">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/assets/logo_icon.png" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" />
@@ -12,12 +12,12 @@
 <div class="card bg-neutral text-neutral-content w-96 mx-auto shadow-md">
   <div class="card-body items-center text-center">
     <h2 class="card-title">Logout!</h2>
-    <p th:text="#{msg.logoutConfirm}"></p>
+    <p>Tem certeza que deseja sair?</p>
     <div class="card-actions justify-end mt-4">
       <form method="post" th:action="@{/logout}">
         <button class="btn btn-primary">Logout</button>
       </form>
-      <a href="javascript:history.back()" class="btn btn-ghost" th:text="#{button.cancel}">Cancelar</a>
+      <a href="javascript:history.back()" class="btn btn-ghost">Cancelar</a>
     </div>
   </div>
 </div>
