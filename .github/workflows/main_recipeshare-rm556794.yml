@@ -42,18 +42,3 @@ jobs:
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_9b1782ca50874fb7906cce20af2bea5e }}
           package: 'build/libs/*-SNAPSHOT.jar'
-
-      # 6️ Garantir que o App Service tem as variáveis de ambiente corretas
-      - name: Set environment variables on Azure Web App
-        run: |
-          az webapp config appsettings set \
-            --name recipeshare-rm556794 \
-            --resource-group rg-recipeshare \
-            --settings \
-            RSGITHUB_CLIENT_ID=${{ secrets.RSGITHUB_CLIENT_ID }} \
-            RSGITHUB_CLIENT_SECRET=${{ secrets.RSGITHUB_CLIENT_SECRET }} \
-            SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
-            SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
-            SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-        env:
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
