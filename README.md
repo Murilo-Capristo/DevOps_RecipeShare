@@ -141,6 +141,10 @@ echo "Deploy concluído com sucesso!"
 - `SPRING_DATASOURCE_USERNAME`: admsql
 - `SPRING_DATASOURCE_PASSWORD`: Fiap@2tdsvms
 - `SPRING_DATASOURCE_URL`: JDBC URL do banco
+
+        * **Como obter o valor**: Vá para o Portal Azure > `rg-recipeshare` > `recipesharedb (sqlserver-rm556794/recipeshare)` > `Configurações` > `Cadeias de conexão` > copie o valor do campo **JDBC**.
+        > jdbc:sqlserver://sqlserver-rm556794.database.windows.net:1433;database=recipesharedb;user=admsql@sqlserver-rm556794;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;;
+
 - `RSGITHUB_CLIENT_ID`: GitHub OAuth Client ID
 - `RSGITHUB_CLIENT_SECRET`: GitHub OAuth Client Secret
 - `AzureAppService_PublishProfile_...`: conteúdo do arquivo de publicação do App Service
