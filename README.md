@@ -10,19 +10,6 @@ O projeto **RecipeShare** é uma aplicação web para gerenciamento de receitas 
 
 ---
 
-##  Sumário
-
-- [Pré-requisitos](#-pré-requisitos)
-- [Parte 1: Provisionamento da Infraestrutura do Banco de Dados](#-parte-1-provisionamento-da-infraestrutura-do-banco-de-dados)
-- [Parte 2: Deploy da Aplicação com Script Automatizado](#-parte-2-deploy-da-aplicação-com-script-automatizado)
-- [Parte 3: Configuração do Deploy Contínuo com GitHub Actions](#-parte-3-configuração-do-deploy-contínuo-com-github-actions)
-  - [3.1 Configurando os Secrets do Repositório](#31-configurando-os-secrets-do-repositório)
-  - [3.2 Ajustando o Workflow](#32-ajustando-o-workflow)
-- [Parte 4: Verificação e Testes](#-parte-4-verificação-e-testes)
-- [Considerações Finais](#-considerações-finais)
-
----
-
 ##  Pré-requisitos
 
 Antes de começar, garanta que você tenha:
