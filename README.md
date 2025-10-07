@@ -30,14 +30,36 @@ Antes de começar, garanta que você tenha:
 1. Conta na Microsoft Azure com assinatura ativa.
 2. Azure CLI instalada ou acesso ao Cloud Shell pelo portal Azure.
 3. Repositório GitHub com o código-fonte da aplicação.
-4. Segredos do GitHub OAuth configurados (client_id e client_secret).
+4. Secrets do GitHub OAuth configurados (client_id e client_secret).
+> ``Settings`` -> ``Developer Settings`` -> ``OAuth Apps`` -> ``New OAuth App ``
 
 ---
+
 
 ##  Parte 1: Provisionamento da Infraestrutura do Banco de Dados
 
 Criação do grupo de recursos, servidor SQL e banco de dados via script no Azure Cloud Shell.
 
+
+1.  Acesse o Portal Azure
+ e abra o Cloud Shell clicando no ícone ``>_`` no topo da página. Verifique se o ambiente selecionado é ``Bash``.
+
+2.  Crie um arquivo de script para provisionar a infraestrutura:
+    ```bash
+    touch create-sql-server.sh
+    ```
+
+3.  Conceda permissão de execução ao script:
+    ```bash
+    chmod +x create-sql-server.sh
+    ```
+
+4.  Abra o editor para editar o script e colar o conteúdo desejado:
+    ```bash
+    nano create-sql-server.sh
+    ```
+
+5.  Cole o código no editor. Importante: por segurança, evite expor senhas diretamente no script. Para ambientes de produção, utilize soluções seguras como o Azure Key Vault ou outros métodos de gerenciamento de segredos.
 ```bash
 #!/bin/bash
 
@@ -141,7 +163,8 @@ echo "Deploy concluído com sucesso!"
 - `SPRING_DATASOURCE_USERNAME`: admsql
 - `SPRING_DATASOURCE_PASSWORD`: Fiap@2tdsvms
 - `SPRING_DATASOURCE_URL`: JDBC URL do banco
-  **Como obter o valor**: Vá para o Portal Azure > `rg-recipeshare` > `recipesharedb (sqlserver-rm556794/recipeshare)` > `Configurações` > `Cadeias de conexão` > copie o valor do campo **JDBC**.
+  -  **Como obter o valor**: Vá para o Portal Azure > `rg-recipeshare` > `recipesharedb (sqlserver-rm556794/recipeshare)` > `Configurações` > `Cadeias de conexão` > copie o valor do campo **JDBC**.
+
         > jdbc:sqlserver://sqlserver-rm556794.database.windows.net:1433;database=recipesharedb;user=admsql@sqlserver-rm556794;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;;
 
 - `RSGITHUB_CLIENT_ID`: GitHub OAuth Client ID
@@ -149,6 +172,11 @@ echo "Deploy concluído com sucesso!"
 - `AzureAppService_PublishProfile_...`: conteúdo do arquivo de publicação do App Service
 
 ### 3.2 Workflow de Build e Deploy
+
+O script `deploy-ondetamoto.sh` gera um arquivo de workflow `.yml` no diretório ``.github/workflows/`` do seu repositório. É necessário substituir esse arquivo.
+
+1.  No seu repositório, localize e abra o arquivo `.yml` recém-criado.
+2.  Substitua **todo o conteúdo** dele pelo código abaixo. Este código está ajustado para um build correto.
 
 ```yaml
 name: 'Build and deploy JAR app to Azure Web App: recipeshare-rm556794'
@@ -191,16 +219,79 @@ jobs:
 ##  Parte 4: Verificação e Testes
 
 - Acesse o Web App no Azure para verificar a aplicação rodando.
-- Use o Swagger ou Postman para testar os endpoints CRUD.
-- Certifique-se que as tabelas do banco foram criadas pelo Flyway.
+1.  No Portal Azure, vá para o seu banco de dados `recipesharedb`.
+2.  No menu lateral, selecione **Editor de Consultas (visualização)**.
+3.  Faça o login com a **Autenticação do SQL Server**:
+    * **Login**: `admsql`
+    * **Senha**: `Fiap@2tdsvms`
+4.  Execute as seguintes consultas para verificar se as tabelas foram criadas e se contêm dados:
 
+    ```sql
+    select * from recipe;
+    select * from ingredient;
+    select * from rs_user;
+    select * from ingredient_recipe;
+    select * from recipe_likes;
+    ```
 ---
+## Rotas Pricipais pra Teste 
 
-##  Considerações Finais
 
-- Garanta que o Flyway tenha suas migrations corretas.
-- Verifique logs do App Service em caso de erro.
-- Confirme todas as variáveis de ambiente e secrets configurados corretamente.
+Para testar a API, você precisará da URL do seu App Service (por exemplo: https://recipeshare-rm556794.azurewebsites.net). A partir dessa URL, você poderá acessar os endpoints da API para criar usuários, receitas, ingredientes e gerenciar likes, usando ferramentas como Postman ou diretamente via requisições HTTP. Você pode encontrar a URL na página de visão geral do seu App Service no portal Azure.
+
+**PORÉM**, o app possui autenticação por github, então não é possível testar com o método convencional pelo Postman, apenas pelo app ou pelo banco de dados.
+Mas esses são os exemplos reais que o app usa:
+
+#### Exemplo 1: `POST` (Cadastro de Ingrediente)
+Endpoint: ``POST /ingredients``
+```bash
+{
+  "name": "Abacate",
+  "default_unit": "GRAMAS"
+}
+
+```
+#### Exemplo 2: `POST` (Criação de receita)
+Endpoint: ``POST /recipes``
+```bash
+{
+  "title": "Panqueca de Banana",
+  "description": "Panquecas simples de banana",
+  "portions": 4,
+  "prep_time": 25,
+  "difficulty": "EASY",
+  "category": "BREAKFAST",
+  "likes": 0,
+  "image_url": "https://example.com/panqueca.jpg",
+  "user_id": 1
+}
+
+```
+
+#### Exemplo 3: `PUT` (Atualizar receita)
+Endpoint: ``PUT /recipe/{id}``
+```bash
+{
+  "title": "Panqueca de Banana Atualizada",
+  "description": "Versão atualizada da receita",
+  "portions": 5,
+  "prepTime": 30,
+  "difficulty": "MEDIUM",
+  "category": "BREAKFAST",
+  "imageUrl": "https://example.com/panqueca-atualizada.jpg"
+}
+```
+
+#### Exemplo 4: `DELETE` (Remover receita)
+Endpoint: ``DELETE /recipe/{id}``
+
+
+#### Exemplo 5: `GET` (Listar todas as receitas)
+Endpoint: ``GET /recipe``
+
+
+* **Logs**: Se a aplicação falhar ao iniciar, verifique os logs. Vá para o App Service no Portal Azure > **Ferramentas de Desenvolvimento** > **Fluxo de Log** para ver os logs em tempo real.
+
 
 ---
 
