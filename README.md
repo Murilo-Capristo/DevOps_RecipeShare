@@ -4,13 +4,13 @@ Este documento descreve o processo completo de provisionamento da infraestrutura
 
 ---
 
-## 📝 Descrição da Solução
+##  Descrição da Solução
 
 O projeto **RecipeShare** é uma aplicação web para gerenciamento de receitas culinárias, integrando funcionalidades de CRUD (criação, leitura, atualização e exclusão) e autenticação via GitHub OAuth. A aplicação utiliza banco de dados SQL Server na Azure e é implantada via App Service, permitindo acesso público através da web.
 
 ---
 
-## 🎯 Sumário
+##  Sumário
 
 - [Pré-requisitos](#-pré-requisitos)
 - [Parte 1: Provisionamento da Infraestrutura do Banco de Dados](#-parte-1-provisionamento-da-infraestrutura-do-banco-de-dados)
@@ -23,7 +23,7 @@ O projeto **RecipeShare** é uma aplicação web para gerenciamento de receitas 
 
 ---
 
-## ✔️ Pré-requisitos
+##  Pré-requisitos
 
 Antes de começar, garanta que você tenha:
 
@@ -34,7 +34,7 @@ Antes de começar, garanta que você tenha:
 
 ---
 
-## 🚀 Parte 1: Provisionamento da Infraestrutura do Banco de Dados
+##  Parte 1: Provisionamento da Infraestrutura do Banco de Dados
 
 Criação do grupo de recursos, servidor SQL e banco de dados via script no Azure Cloud Shell.
 
@@ -66,7 +66,7 @@ echo "Infraestrutura do banco criada com sucesso!"
 
 ---
 
-## ⚙️ Parte 2: Deploy da Aplicação com Script Automatizado
+##  Parte 2: Deploy da Aplicação com Script Automatizado
 
 ```bash
 #!/bin/bash
@@ -134,7 +134,7 @@ echo "Deploy concluído com sucesso!"
 
 ---
 
-## 🔧 Parte 3: Configuração do Deploy Contínuo com GitHub Actions
+##  Parte 3: Configuração do Deploy Contínuo com GitHub Actions
 
 ### 3.1 Configurando os Secrets do Repositório
 
@@ -185,7 +185,7 @@ jobs:
 
 ---
 
-## 🔬 Parte 4: Verificação e Testes
+##  Parte 4: Verificação e Testes
 
 - Acesse o Web App no Azure para verificar a aplicação rodando.
 - Use o Swagger ou Postman para testar os endpoints CRUD.
@@ -193,7 +193,7 @@ jobs:
 
 ---
 
-## 💡 Considerações Finais
+##  Considerações Finais
 
 - Garanta que o Flyway tenha suas migrations corretas.
 - Verifique logs do App Service em caso de erro.
@@ -201,9 +201,8 @@ jobs:
 
 ---
 
-## 🧑‍💻 Integrantes do Grupo
+##  Integrantes do Grupo
 
 - Murilo Capristo - RM556794
-- Guilherme Romanholi - RM557462
 - Nicolas Guinante - RM557844
 
